@@ -26,27 +26,48 @@ var tempCharArray = [Character] ()
 var tempStringArray = [String]()
 var temp : Int!
 var i : Int! = 0
+var uygunMu : Bool = true
 while onlukTabandakiEnbuyukSayi > 0{
     tempCharArray.removeAll()
     tempCharArray =  Array(String(onlukTabandakiEnbuyukSayi,radix : 2))
     while i <= tempCharArray.count-1
     {
+        /*
+    10'luk tabanda | 2'lik Tabanda
+         1.        | 1
+         2.        | 10
+         3.        | 11
+         4.        | 100
+         5.        | 101
+         6.        | 110
+         7.        | 111
+         sıkıntı şöyle biz 3 basamaklı istediğimiz zaman 3 basamaklı olmayan sayılar da olucak ustteki gibi
+         önüne sıfır koymamız sayı açısından bişey değiştirmesede beyaz muhabbetini biz anlayabilecez
+         ama önüne nasıl koyacağımızı ben yapamadım yani kafam durdu bi bakıver :/
+         */
         if tempCharArray.count == i+1 {
             break
         }
-        if tempCharArray[i] == tempCharArray[i+1]{
-            print("yan yana 1 var")
-        }else{
-            print("1 yok yan yana")
-            tempStringArray.append(String(tempCharArray))
-        }
         
-            i = i + 1
-        print(tempStringArray)
+        if tempCharArray[i] == tempCharArray[i+1]{
+            if (tempCharArray.first == "1"){
+                uygunMu = false
+                break
+            }
+            uygunMu = false
+            break
+        }
+        i = i + 1
     }
-    i = 0
+    if(uygunMu){
+        tempStringArray.append(String(tempCharArray))
+    }
+     i = 0
     onlukTabandakiEnbuyukSayi = onlukTabandakiEnbuyukSayi-1
-
+    uygunMu = true
+}
+for item in tempStringArray{
+    print("\(item)")
 }
 
 
