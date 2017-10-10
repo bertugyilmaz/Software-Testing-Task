@@ -36,8 +36,8 @@ import Foundation
 
     while onlukTabandakiEnbuyukSayi > 0{
         tempCharArray.removeAll()
-//        tempCharArray =  Array(String(onlukTabandakiEnbuyukSayi,radix : 2))       --> not conform sequence failed 
-        
+        var onlukTabandakiEnBuyukSayiStr = String(onlukTabandakiEnbuyukSayi,radix : 2)
+        tempCharArray =  Array(onlukTabandakiEnBuyukSayiStr.characters)
         
         while i <= tempCharArray.count-1
         {
