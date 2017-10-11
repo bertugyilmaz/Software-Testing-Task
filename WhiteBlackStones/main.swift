@@ -1,87 +1,87 @@
-//
-//  main.swift
-//  WhiteBlackStones
-//
-//  Created by onur hüseyin çantay on 7.10.2017.
-//  Copyright © 2017 onur hüseyin çantay. All rights reserved.
-//
 
 import Foundation
 
-    var basamakSayisi : Int = 0
-    var enBuyukSayiKarakterDizisi = [Character] ()
-    var enBuyukSayiDizisi : String!
-    var onlukTabandakiEnbuyukSayi : Int!
+    func decimalToString(_ deci: Decimal) -> String {
+        let dummy = String(describing: deci)
+        return dummy
+    }
 
+    func stringToInt(_ str: String) -> Int {
+        guard let dummy = Int(str) else {
+            return 0
+        }
+        return dummy
+    }
+
+    func intToBinary(binary : Int) -> String{
+        return String(binary,radix : 2)
+    }
+
+    let blackStone : Character = "0"
+    var lineNumber : Int = 0
+    var aralikAsString : String!
+    var aralikAsInt : Int!
+    var tempCharArray = [Character]()
+    var tempStringArray = [String]()
+    var resultsArray = [String]()
+    var isCorrect : Bool = true
+
+    print("**********************************************************************************\n")
+    print("Sayılar 0 ile başlıyamayacağı için siyahları 0 beyazları 1 olarak kabul edilmistir")
+    print("\n**********************************************************************************\n")
     print("Basamak Sayısını giriniz : ")
 
-    if let response = readLine(){
-        basamakSayisi = Int(response)!
-    }
-
-    for _ in 1...basamakSayisi {
-        enBuyukSayiKarakterDizisi.append("1")
-        enBuyukSayiDizisi = String(enBuyukSayiKarakterDizisi)
-    }
-
-    onlukTabandakiEnbuyukSayi = Int(enBuyukSayiDizisi, radix : 2)
-    print(enBuyukSayiDizisi)
-    print(onlukTabandakiEnbuyukSayi)
-
-    var tempCharArray = [Character] ()
-    var tempStringArray = [String]()
-    var temp : Int!
-    var i : Int! = 0
-    var uygunMu : Bool = true
-
-    while onlukTabandakiEnbuyukSayi > 0{
-        tempCharArray.removeAll()
-        var onlukTabandakiEnBuyukSayiStr = String(onlukTabandakiEnbuyukSayi,radix : 2)
-        tempCharArray =  Array(onlukTabandakiEnBuyukSayiStr.characters)
-        
-        while i <= tempCharArray.count-1
-        {
-            /*
-        10'luk tabanda | 2'lik Tabanda
-             1.        | 1
-             2.        | 10
-             3.        | 11
-             4.        | 100
-             5.        | 101
-             6.        | 110
-             7.        | 111
-             sıkıntı şöyle biz 3 basamaklı istediğimiz zaman 3 basamaklı olmayan sayılar da olucak ustteki gibi
-             önüne sıfır koymamız sayı açısından bişey değiştirmesede beyaz muhabbetini biz anlayabilecez
-             ama önüne nasıl koyacağımızı ben yapamadım yani kafam durdu bi bakıver :/
-             */
-            
-            if tempCharArray.count == i+1 {
+    while true {
+        if let response = readLine() {
+            if let responseInt = Int(response){
+                if responseInt > 20 {
+                    print("Girdiğiniz Değerin Hesaplanabilmesi Zaman alıyor..")
+                    print("Başka Bir Değer Giriniz...")
+                    continue
+                }
+                lineNumber = responseInt
                 break
+            }else{
+                print("Please enter a valid Value")
             }
-            
-            if tempCharArray[i] == tempCharArray[i+1]{
-                if (tempCharArray.first == "1"){
-                    uygunMu = false
+        }
+    }
+
+    if lineNumber == 0 {                                                     //0 lar siyah kabul edildiği için
+        print("ihtimal bulunamadı")
+        exit(0)
+    }
+
+    aralikAsString = decimalToString(pow(2, lineNumber))                    // 2 üzeri girilen basamak sayısı kadar olan sayıyı bulur ve string değere dönüştürülür
+    aralikAsInt = stringToInt(aralikAsString)                               // oluşan bu string değerle işlem yapabilmek için int e çevirildi
+
+    for i in aralikAsInt / 2 ... aralikAsInt - 1 {
+        tempStringArray.removeAll()                                         //farklı değerler için boşaltım gerçekleştirildi
+        tempStringArray.append(intToBinary(binary: i))
+        for item in tempStringArray{
+            tempCharArray = Array(item.characters)                          //string içerisindeki tüm karakterler char arrayine dönüştürüldü
+        
+            for i in 0...tempCharArray.count-1{
+                if tempCharArray.count == i + 1{
                     break
                 }
-                uygunMu = false
-                break
+                if tempCharArray[i] == blackStone && tempCharArray[i+1] == blackStone {
+                    isCorrect = false                                      //gerekli şartların sağlanıp sağlanmadığı kontrol edildi
+                    break
+                }else{
+                    isCorrect = true
+                }
             }
-            i = i + 1
+            
+                if isCorrect {
+                resultsArray.append(item)
+                tempCharArray.removeAll()                                  //char dizisi terkar kullanılabilmek üzere boşaltıldı
+            }
         }
-        
-        if(uygunMu){
-            tempStringArray.append(String(tempCharArray))
-        }
-        
-        i = 0
-        onlukTabandakiEnbuyukSayi = onlukTabandakiEnbuyukSayi-1
-        uygunMu = true
     }
 
-    for item in tempStringArray{
-        print("\(item)")
+    for item in resultsArray {
+        print("Uygun Değerler --> \(item)")
     }
 
-
-
+    print("\n\(lineNumber) lı sayının olasılığı --> \(resultsArray.count)")
